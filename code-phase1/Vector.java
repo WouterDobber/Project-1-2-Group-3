@@ -180,6 +180,6 @@ public class Vector implements Vector3dInterface {
 	 *         (-1.0,2.0,-3.0)
 	 */
 	public String toString() {
-		return "(" + x + ", " + y + " ," + z + ")";
+		return "(" + x + "," + y + "," + z + ")";
 	}
 }
