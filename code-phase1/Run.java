@@ -33,6 +33,7 @@ public class Run implements ActionListener {
 	}
 
 	public void start() {
+		state = new State(solarSystem.bodies);
 		frame.setSize(800, 800);
 		frame.setContentPane(new UniFrame());
 		zoomIn = new JButton(zoomInStr);
@@ -44,7 +45,6 @@ public class Run implements ActionListener {
 		frame.add(buttons);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		state = new State(solarSystem.bodies);
 		
 		//Adding probe 
 		CelestialBody Probe = new CelestialBody("rocket", rocket, 15000, -1.471886208478151E11, -2.861522074209465E10, 8170057.668900404, 27962.61762782645, -62349.24395947284, -666.7403073700751);
