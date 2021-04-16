@@ -51,12 +51,20 @@ public class SolarSystemSolver implements ODESolverInterface {
 		NewtonsFunction castedF = (NewtonsFunction) f;
 		State castedY = (State) y0;
 		// tf/h gives number of elements in array
-		StateInterface[] array = new StateInterface[(int) (tf / h) + 1];
+		StateInterface[] array;
+		if (tf%h==0){
+			array = new StateInterface[(int) (tf / h) + 1];
+		} else{
+			 array = new StateInterface[(int) (tf / h) + 2];
+		}
 		array[0] = y0;
-		int i = 1;
-		while (i < array.length) {
-			array[i] = step(f, i*h, array[i - 1], h);
+		int i = 0;
+		while (i*h < tf) {
 			i++;
+			array[i] = step(f, i*h, array[i - 1], h);
+		}
+		if (i*h != tf){
+			array[i] = step(f, tf, array[i - 1], tf-((i-1)*h));
 		}
 		return array;
 	}
