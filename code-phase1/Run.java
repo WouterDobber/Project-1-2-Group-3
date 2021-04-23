@@ -33,6 +33,7 @@ public class Run implements ActionListener {
 	}
 
 	public void start() {
+		System.out.println("kek");
 		state = new State(solarSystem.bodies);
 		frame.setSize(800, 800);
 		frame.setContentPane(new UniFrame());
@@ -49,15 +50,33 @@ public class Run implements ActionListener {
 		//Adding probe 
 		CelestialBody Probe = new CelestialBody("rocket", rocket, 15000, -1.471886208478151E11, -2.861522074209465E10, 8170057.668900404, 27962.61762782645, -62349.24395947284, -666.7403073700751);
 		solarSystem.bodies.add(Probe); 
-		
+
+		// EULER METHOD
 		SolarSystemSolver solver = new SolarSystemSolver();
 		NewtonsFunction function = new NewtonsFunction();
+
+		// Runge-Kutta solver
+		//RungeKuttaSolver solver = new RungeKuttaSolver();
+
+		// Verlet solver
+		//VelocityVerlet solver = new VelocityVerlet();
 
 		int numStepsPerUpdate = 5; // more steps planets move faster
 		// seconds in 1 year: 31556952
 		// run for: j*numStepsPerUpdate= total number of seconds passed
 		for (int j = 0; j * numStepsPerUpdate < 31556952; j++) {
+			//UNCOMMENT FOR EULER
 			state = (State) solver.step(function, j * numStepsPerUpdate, state, numStepsPerUpdate);
+
+			//UNCOMMENT for r-k 4th and velocity verlet
+			//double timeFrame = 5;
+			//StateInterface[] currentState = solver.solve(solarSystem.getBodies(), state, timeFrame, timeFrame);
+
+			// cause the first one is initial state that velocity verlet started working with
+			//UNCOMMENT for r-k 4th and velocity verlet
+			//System.out.println(currentState.length);
+			//state = (State)currentState[1];
+
 			frame.getContentPane().repaint();
 		}
 
@@ -101,7 +120,9 @@ public class Run implements ActionListener {
 			g.setColor(Color.BLACK);
 			g.fillRect(0, 0, 1800, 1280);
 
-			for (CelestialBody body : state.celestialBodies) {
+
+			for (int i = 0; i < state.celestialBodies.size(); i++) {
+				CelestialBody body = state.celestialBodies.get(i);
 				g.setColor(Color.WHITE);
 				// System.out.println(body.toString());
 
@@ -111,6 +132,8 @@ public class Run implements ActionListener {
 
 				int x = (int) (body.getLocation().getX() / graphicConstant + positioning) * scaleFactor;
 				int y = (int) (body.getLocation().getY() / graphicConstant + positioning) * scaleFactor;
+				System.out.println("body #" + (i + 1) + " "  + x + " " + y);
+
 				int size = (int) (4 * scaleFactor + body.getRadius());
 				g.drawString(body.getName(), x + size - 15, y + 17);
 				// g.drawOval(x - 15, y-1, 10, 10);
@@ -118,6 +141,7 @@ public class Run implements ActionListener {
 				
 
 			}
+			System.out.println();
 		}
 	}
 }

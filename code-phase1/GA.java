@@ -178,7 +178,7 @@ public class GA {
 
 	/**
 	 * In this method we take the 8 fittest individuals and have them reproduce with
-	 * all of the individuals that come after, untill 17, leaving exactly 100 new
+	 * all of the individuals that come after, until 17, leaving exactly 100 new
 	 * individuals
 	 *
 	 * @param chromosome1 is the first parent's chromosome, which is always one of
