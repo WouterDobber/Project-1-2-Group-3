@@ -23,6 +23,10 @@ public class Vector implements Vector3dInterface {
 	public Vector() {
 	}
 
+	public Vector getClone() {
+		return new Vector(x, y, z);
+	}
+
 	/**
 	 *
 	 * @return the x-value of the vector

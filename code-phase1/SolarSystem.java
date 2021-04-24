@@ -2,20 +2,27 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class SolarSystem {
+	public final static double G = 6.67408E-11;
+
 	ArrayList<CelestialBody> bodies = new ArrayList<CelestialBody>();
-	Image sun = new ImageIcon("solarimages/sun.png").getImage();
-	Image earth = new ImageIcon("solarimages/earth.png").getImage();
-	Image jupiter = new ImageIcon("solarimages/jupiter.png").getImage();
-	Image mars = new ImageIcon("solarimages/mars.png").getImage();
-	Image mercury = new ImageIcon("solarimages/mercury.png").getImage();
-	Image moon = new ImageIcon("solarimages/moon.png").getImage();
-	Image neptune = new ImageIcon("solarimages/neptune.png").getImage();
-	Image saturn = new ImageIcon("solarimages/saturn.png").getImage();
-	Image titan = new ImageIcon("solarimages/titan.png").getImage();
-	Image uranus = new ImageIcon("solarimages/uranus.png").getImage();
-	Image venus = new ImageIcon("solarimages/venus.png").getImage();
+	Image sun = new ImageIcon("src/solarimages/sun.png").getImage();
+	Image earth = new ImageIcon("src/solarimages/earth.png").getImage();
+	Image jupiter = new ImageIcon("src/solarimages/jupiter.png").getImage();
+	Image mars = new ImageIcon("src/solarimages/mars.png").getImage();
+	Image mercury = new ImageIcon("src/solarimages/mercury.png").getImage();
+	Image moon = new ImageIcon("src/solarimages/moon.png").getImage();
+	Image neptune = new ImageIcon("src/solarimages/neptune.png").getImage();
+	Image saturn = new ImageIcon("src/solarimages/saturn.png").getImage();
+	Image titan = new ImageIcon("src/solarimages/titan.png").getImage();
+	Image uranus = new ImageIcon("src/solarimages/uranus.png").getImage();
+	Image venus = new ImageIcon("src/solarimages/venus.png").getImage();
+
+	public ArrayList<CelestialBody> getBodies() {
+		return bodies;
+	}
 
 	public SolarSystem() {
 
@@ -46,6 +53,10 @@ public class SolarSystem {
 		bodies.get(1).setRadius(6371e3); // EARTH
 		bodies.get(6).setRadius(2575.5e3); // TITAN
 		
+	}
+
+	public void force_verlet(CelestialBody body) {
+
 	}
 
 	public void add(CelestialBody newBody) {

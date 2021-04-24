@@ -1,13 +1,14 @@
 
 import java.awt.*;
 
-public class CelestialBody {
+public class CelestialBody implements Cloneable {
 	private String name;
 	private double mass;
 	private double radius;
 	private Image pic;
 	private Vector3dInterface location;
 	private Vector3dInterface velocity;
+	private Vector3dInterface acceleration;
 
 	/**
 	 * Constructor
@@ -49,6 +50,10 @@ public class CelestialBody {
 		this.velocity = velocity;
 	}
 
+	public CelestialBody getClone() {
+		return new CelestialBody(name, pic, mass, location.getClone(), velocity.getClone());
+	}
+
 	/**
 	 *
 	 * @return name of planet
@@ -67,6 +72,14 @@ public class CelestialBody {
 
 	/**
 	 *
+	 * @return Vector containing acceleration vector of the celecsial body
+	 */
+	public Vector3dInterface getAcceleration() {
+		return acceleration;
+	}
+
+	/**
+	 *
 	 * @return Vector containing x,y,z position coordinates of the celestial body
 	 */
 	public Vector3dInterface getLocation() {
@@ -79,6 +92,15 @@ public class CelestialBody {
 	 */
 	public Vector3dInterface getVelocity() {
 		return velocity;
+	}
+
+	/**
+	 * Sets the acceleration of the body to the given vector
+	 *
+	 * @param value Vector containing acceleration of the celestial body
+	 */
+	public void setAcceleration(Vector3dInterface value) {
+		acceleration = value;
 	}
 
 	/**

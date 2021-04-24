@@ -135,7 +135,16 @@ public class Probe implements ProbeSimulatorInterface {
 		SolarSystemSolver solver = new SolarSystemSolver();
 		StateInterface state = new State(universe.bodies);
 
-		StateInterface[] StateOfSolarSystem = solver.solve(function, state, tf, h);
+		// EULER COMMENTED
+		//StateInterface[] StateOfSolarSystem = solver.solve(function, state, tf, h);
+
+		// Runge-Kutta solver
+		//RungeKuttaSolver rungeKuttaSolver = new RungeKuttaSolver();
+		//StateInterface[] StateOfSolarSystem = rungeKuttaSolver.solve(universe.getBodies(), state, tf, h);
+
+		// Verlet solver
+		VelocityVerlet velocityVerlet = new VelocityVerlet();
+		StateInterface[] StateOfSolarSystem = velocityVerlet.solve(universe.getBodies(), state, tf, h);
 		State initialState = (State) StateOfSolarSystem[0];
 
 		double min = initialState.celestialBodies.get(6).getLocation()
@@ -147,6 +156,8 @@ public class Probe implements ProbeSimulatorInterface {
 			initialState = (State) StateOfSolarSystem[i];
 			euclideanDistance = initialState.celestialBodies.get(6).getLocation()
 					.dist(initialState.celestialBodies.get(11).getLocation());
+
+			System.out.println(euclideanDistance);
 			if (min > euclideanDistance) {
 				min = euclideanDistance;
 				time = initialState.getTime();
