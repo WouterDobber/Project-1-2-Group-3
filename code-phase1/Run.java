@@ -33,7 +33,6 @@ public class Run implements ActionListener {
 	}
 
 	public void start() {
-		System.out.println("kek");
 		state = new State(solarSystem.bodies);
 		frame.setSize(800, 800);
 		frame.setContentPane(new UniFrame());
@@ -52,30 +51,29 @@ public class Run implements ActionListener {
 		solarSystem.bodies.add(Probe); 
 
 		// EULER METHOD
-		SolarSystemSolver solver = new SolarSystemSolver();
-		NewtonsFunction function = new NewtonsFunction();
+		//SolarSystemSolver solver = new SolarSystemSolver();
+		//NewtonsFunction function = new NewtonsFunction();
 
 		// Runge-Kutta solver
 		//RungeKuttaSolver solver = new RungeKuttaSolver();
 
 		// Verlet solver
-		//VelocityVerlet solver = new VelocityVerlet();
+		VelocityVerlet solver = new VelocityVerlet();
 
 		int numStepsPerUpdate = 5; // more steps planets move faster
 		// seconds in 1 year: 31556952
 		// run for: j*numStepsPerUpdate= total number of seconds passed
 		for (int j = 0; j * numStepsPerUpdate < 31556952; j++) {
 			//UNCOMMENT FOR EULER
-			state = (State) solver.step(function, j * numStepsPerUpdate, state, numStepsPerUpdate);
+			//state = (State) solver.step(function, j * numStepsPerUpdate, state, numStepsPerUpdate);
 
 			//UNCOMMENT for r-k 4th and velocity verlet
-			//double timeFrame = 5;
-			//StateInterface[] currentState = solver.solve(solarSystem.getBodies(), state, timeFrame, timeFrame);
+			double timeFrame = 5;
+			StateInterface[] currentState = solver.solve(solarSystem.getBodies(), state, timeFrame, timeFrame);
 
-			// cause the first one is initial state that velocity verlet started working with
+			// cause the first one is initial state that velocity verlet started working with state
 			//UNCOMMENT for r-k 4th and velocity verlet
-			//System.out.println(currentState.length);
-			//state = (State)currentState[1];
+			state = (State)currentState[1];
 
 			frame.getContentPane().repaint();
 		}

@@ -56,7 +56,7 @@ public class RungeKuttaSolver {
         body.setAcceleration(totalForce.divide(body.getMass()));
     }
 
-    //TODO replace constant values with something dependant on h
+
     public void update() {
         for(int i=1; i < bodies.size(); i++) {
             //Runge kutta 4th order

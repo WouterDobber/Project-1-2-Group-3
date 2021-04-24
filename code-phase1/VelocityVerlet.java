@@ -58,7 +58,18 @@ public class VelocityVerlet {
     }
 
     /*
-    https://www2.icp.uni-stuttgart.de/~icp/mediawiki/images/5/54/Skript_sim_methods_I.pdf
+     * Processes the shot using the Velocity Verlet Method.
+     * This method updates the position and velocity in five steps:
+     * 1 The current acceleration is calculated using the current position and velocity.
+     * 2 The next position is calculated using the current position, velocity and acceleration.
+     * 3 The intermediate velocity is calculated using the current velocity and acceleration.
+     * 4 The next acceleration is calculated using the next position and intermediate velocity.
+     * 5 The next velocity is calculated using the intermediate velocity and the next acceleration.
+     * Sources used:   http://www.physics.udel.edu/~bnikolic/teaching/phys660/numerical_ode/node5.html
+     *                 https://www2.icp.uni-stuttgart.de/~icp/mediawiki/images/5/54/Skript_sim_methods_I.pdf
+     *                 https://www.algorithm-archive.org/contents/verlet_integration/verlet_integration.html
+     *
+
     */
     public void update() {
 
