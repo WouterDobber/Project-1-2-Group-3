@@ -7,6 +7,8 @@
 
 public interface Vector3dInterface {
 
+	public Vector3dInterface getClone();
+	
 	public double getX();
 
 	public void setX(double x);
