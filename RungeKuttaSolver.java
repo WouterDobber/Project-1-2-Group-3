@@ -7,68 +7,33 @@ public class RungeKuttaSolver {
         ArrayList<CelestialBody> updatedCelestialBodies = new ArrayList<CelestialBody>();
         ODEFunctionInterface f = new NewtonsFunction();
 
+        /*
+     * Processes the shot using The Runge–Kutta Method.
+     * This method updates the position and velocity in 4 steps:
+     * 1 ki1 is the slope at the beginning of the interval, using y
+     * 2 ki2 is the slope at the midpoint of the interval, using y and ki1
+     * 3 ki3 is again the slope at the midpoint, but now using y and ki2
+     * 4 ki4 is the slope at the end of the interval, using y and ki3
+     * Sources used:   https://web.mit.edu/10.001/Web/Course_Notes/Differential_Equations_Notes/node5.html
+     *                 https://academicjournals.org/article/article1380207159_Agbeboh%20et%20al.pdf
+     *                 https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods
+     *
+    */
         RateOfChange ki1 = (RateOfChange) f.call(time, state);
-        //System.out.println(ki1);
         RateOfChange ki2 = (RateOfChange) f.call(time + 0.5 * step, state.addMulReal(step * 0.5, ki1));
         RateOfChange ki3 = (RateOfChange) f.call(time + 0.5 * step, state.addMulReal(step * 0.5, ki2));
         RateOfChange ki4 = (RateOfChange) f.call(time + step, state.addMulReal(step, ki3));
-
+        
+        // The the next value of cange is determined by the present value of change plus the weighted avarege of four increments,
+        // where each increment is the product of the size of the interval of time, and the estimated slope of step
         RateOfChange change = (ki1.addMul(2, ki2).addMul(2, ki3).addMul(1, ki4)).mul(1.0 / 6.0);
+        
         //acceleration
         Vector3dInterface newPosition;
         Vector3dInterface newVelocity;
-
+        
+        //update
         return state.addMulReal(step, change);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      /**
-
-        ArrayList<CelestialBody> updatedCelestialBodies = new ArrayList<CelestialBody>();
-        for (int i = 0; i < celestialBodies.size(); i++) {
-
-            Vector k1 = new Vector(celestialBodies.get(i).getVelocity().getX(), celestialBodies.get(i).getVelocity().getY(), celestialBodies.get(i).getVelocity().getZ());
-            //Vector k1 = (Vector) celestialBodies.get(i).getVelocity().mul(step);
-            Vector k2 = (Vector) castedRate.accelerations.get(i).mul(step / 2.0).add(k1).add(k1.divide(2.0));
-            Vector k3 = (Vector) castedRate.accelerations.get(i).mul(step / 2.0).add(k1).add(k2.divide(2.0));
-            Vector k4 = (Vector) castedRate.accelerations.get(i).mul(step).add(k1).add(k3);
-            Vector change = (Vector) k1.add(k2.mul(2.0)).add(k3.mul(2.0)).add(k4);
-
-            change = (Vector) change.divide(6.0).mul(step / 2.0);
-
-            Vector3dInterface newPosition = celestialBodies.get(i).getLocation().add(change);
-            Vector3dInterface newVelocity = celestialBodies.get(i).getVelocity().add(castedRate.accelerations.get(i).mul(step));
-            updatedCelestialBodies.add(new CelestialBody(celestialBodies.get(i).getName(),
-                    celestialBodies.get(i).getImage(), celestialBodies.get(i).getMass(), newPosition, newVelocity));
-
-        }
-        return (StateInterface) new State(updatedCelestialBodies);
-    }
-       */
-
 
