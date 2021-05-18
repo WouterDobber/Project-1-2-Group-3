@@ -9,11 +9,11 @@ public class RungeKuttaSolver {
 
         /*
      * Processes the shot using The Runge–Kutta Method.
-     * This method updates the position and velocity in 4 steps:
-     * 1 ki1 is the slope at the beginning of the interval, using y
-     * 2 ki2 is the slope at the midpoint of the interval, using y and ki1
-     * 3 ki3 is again the slope at the midpoint, but now using y and ki2
-     * 4 ki4 is the slope at the end of the interval, using y and ki3
+     * Each of these slope estimates can be described verbally.
+     * 1 ki1 is the slope at the beginning of the time step.
+     * 2 ki2 is an estimate of the slope at the midpoint.
+     * 3 ki3 is another estimate of the slope at the midpoint
+     * 4 ki4 is an estimate of the slope at the endpoint
      * Sources used:   https://web.mit.edu/10.001/Web/Course_Notes/Differential_Equations_Notes/node5.html
      *                 https://academicjournals.org/article/article1380207159_Agbeboh%20et%20al.pdf
      *                 https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods
