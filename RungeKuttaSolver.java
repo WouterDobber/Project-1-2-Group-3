@@ -17,6 +17,7 @@ public class RungeKuttaSolver {
      * Sources used:   https://web.mit.edu/10.001/Web/Course_Notes/Differential_Equations_Notes/node5.html
      *                 https://academicjournals.org/article/article1380207159_Agbeboh%20et%20al.pdf
      *                 https://en.wikipedia.org/wiki/Runge%E2%80%93Kutta_methods
+     *                 https://lpsa.swarthmore.edu/NumInt/NumIntFourth.html
      *
     */
         RateOfChange ki1 = (RateOfChange) f.call(time, state);
