@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class Test_EarthCoordinates { //Earth [Geocenter]
 
-    static final double ACCURACY = 1e5; // 1 meter (might need to tweak that)
+    static final double ACCURACY = 1E4; // 1 meter (might need to tweak that)
     private static double CONVERSION_UNIT_NASA = 0.001;
-    static double step_Year = 60;
-    static double step_day = 60;
+    static double step_Year = 60*60*24; //1 day
+    static double step_day = 60*60*24; //1 day
 
     @Test
     public void testSolverOneDayX() {
