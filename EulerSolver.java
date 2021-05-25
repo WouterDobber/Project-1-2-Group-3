@@ -1,15 +1,14 @@
 import java.util.ArrayList;
 
 public class EulerSolver {
-
+    /**ODE Solver using Euler's first order method 
+   * wi+1= wi + h*f(ti, wi)
+   */ 
     public static StateInterface EulerSolve(RateOfChange castedRate, ArrayList<CelestialBody> celestialBodies, double step){
-        // new ArrayList to add the celestial body states to after a step
+
         ArrayList<CelestialBody> updatedCelestialBodies = new ArrayList<CelestialBody>();
 
         for (int i = 0; i < celestialBodies.size(); i++) {
-            // v(t2) = v(t1) + timeStep * a(t1)				need to check which acceleration is taking
-            //x(t2) = x(t1) + timeStep * v(t1)
-            // velocity computed using acceleration.
             Vector3dInterface newVelocity = celestialBodies.get(i).getVelocity().addMul(step, castedRate.accelerations.get(i));
             // position computed using the newly calculated velocities
 
