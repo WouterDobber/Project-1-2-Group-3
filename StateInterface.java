@@ -6,6 +6,8 @@
  * This interface serves as the API for students in phase 1.
  */
 
+import java.util.ArrayList;
+
 /**
  * An interface representing the state of a system described by a differential
  * equation.
@@ -23,4 +25,7 @@ public interface StateInterface {
 	public StateInterface addMul(double step, RateInterface rate);
 
 	public String toString();
+
+	public ArrayList<CelestialBody> getbodies();
+
 }

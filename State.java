@@ -34,7 +34,12 @@ public class State implements StateInterface {
 		return this.time;
 	}
 
-	
+	public ArrayList<CelestialBody> getbodies(){
+		return this.celestialBodies;
+	}
+
+
+
 
 	/**
 	 * Update a state to a new state, using Euler's method
