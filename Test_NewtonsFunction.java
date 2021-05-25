@@ -23,8 +23,8 @@ class Test_NewtonsFunction {
 
 
     }
-    
-    //this is for another class that i wanted to test, can be ignored 
+    /* Testing addMul method, from class Rate  
+    */ 
     @Test
     public void testAddMulRate (){
         ArrayList<Vector> addRates = new ArrayList<>();
