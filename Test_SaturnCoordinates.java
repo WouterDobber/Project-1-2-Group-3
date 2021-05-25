@@ -5,12 +5,8 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
 public class TestSaturnCoordinates {
-    static final double ACCURACY = 1e4; // 1 meter (might need to tweak that)
+    static final double ACCURACY = 1e4; // play around with this value 
     private static double CONVERSION_UNIT_NASA= 0.001;
-
-    //Euler passes all with 1e5
-    //RK passes all with 1e5
-    //Verlet passes all with 1e4
 
 
     @Test
