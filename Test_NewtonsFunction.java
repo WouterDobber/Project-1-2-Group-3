@@ -1,4 +1,4 @@
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -7,40 +7,146 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class Test_NewtonsFunction {
 
+    NewtonsFunction function = new NewtonsFunction();
+
     @Test
-    void testCall() {
-    CelestialBody a = new CelestialBody("a", null, 10, new Vector(0,0,0),  new Vector (5,5,5) );
-    CelestialBody b = new CelestialBody("b", null, 5, new Vector(2,2,2),  new Vector (3,3,3) );
+    void testTwoBodiesXBothPositive() {
+        CelestialBody a = new CelestialBody("a", null, 10, new Vector(32, 1, 21), new Vector(5, 5, 5));
+        CelestialBody b = new CelestialBody("b", null, 5, new Vector(2, 10, 10), new Vector(3, 3, 3));
+        double G = 6.67430E-11;
+
+        ArrayList<CelestialBody> bodies = new ArrayList<>(); bodies.add(a); bodies.add(b);
+        State state = new State(bodies);
+
+        Vector distance = new Vector(32-2, 1-10, 21-10).normalize();
+
+        double dist = b.getLocation().dist(a.getLocation());
+        double f = G * 50 / (dist * dist);
+
+        RateOfChange result = (RateOfChange) function.call(0, state);
+        Vector expected = distance.mul(f).divide(b.getMass());
+
+        assertEquals(expected.getX(), result.getRates().get(1).getX());
+        assertEquals(expected.getY(), result.getRates().get(1).getY());
+        assertEquals(expected.getZ(), result.getRates().get(1).getZ());
+    }
+
+    @Test
+    void testTwoBodiesPosAndNeg() {
+        CelestialBody a = new CelestialBody("a", null, 10, new Vector(-32, -1, -21), new Vector(5, 5, 5));
+        CelestialBody b = new CelestialBody("b", null, 5, new Vector(2, 10, 10), new Vector(3, 3, 3));
+        double G = 6.67430E-11;
+
+        ArrayList<CelestialBody> bodies = new ArrayList<>(); bodies.add(a); bodies.add(b);
+        State state = new State(bodies);
+
+        Vector distance = new Vector(-32-2, -1-10, -21-10).normalize();
+
+        double dist = b.getLocation().dist(a.getLocation());
+        double f = G * 50 / (dist * dist);
+
+        RateOfChange result = (RateOfChange) function.call(0, state);
+        Vector expected = distance.mul(f).divide(b.getMass());
+
+        assertEquals(expected.getX(), result.getRates().get(1).getX());
+        assertEquals(expected.getY(), result.getRates().get(1).getY());
+        assertEquals(expected.getZ(), result.getRates().get(1).getZ());
+    }
+
+    @Test
+    void testThreeBodiesAllPositive() {
+        CelestialBody a = new CelestialBody("a", null, 10, new Vector(32, 1, 21), new Vector(5, 5, 5));
+        CelestialBody b = new CelestialBody("b", null, 5, new Vector(10, 10, 10), new Vector(3, 3, 3));
+        CelestialBody c = new CelestialBody("c", null, 12, new Vector(2, 14, 1), new Vector(3, 3, 3));
+
+        double G = 6.67430E-11;
+
+        ArrayList<CelestialBody> bodies = new ArrayList<>(); bodies.add(a); bodies.add(b); bodies.add(c);
+        State state = new State(bodies);
+
+
+        Vector distance = new Vector(32-10, 1-10, 21-10).normalize();
+        Vector distance2 = new Vector(2-10,14-10,1-10).normalize();
+
+        double dist = Math.sqrt( (Math.pow(32-10,2) + Math.pow(1-10,2) + Math.pow(21-10,2)));
+
+        double dist2 = Math.sqrt( (Math.pow(10-2, 2) + Math.pow(10-14, 2) + Math.pow(10-1,2)));
+        System.out.println(dist + "             " + dist2);
+
+        double f1 = G * 50 / (dist * dist); //50 = 5*10
+        double f2 = G * 60 / (dist2 * dist2); //60 = 5*12
+
+        RateOfChange result = (RateOfChange) function.call(0, state);
+        Vector expected = distance.mul(f1).divide(b.getMass());
+        expected = (Vector) expected.add(distance2.mul(f2).divide(b.getMass()));
+
+        assertEquals(expected.getX(), result.getRates().get(1).getX());
+        assertEquals(expected.getY(), result.getRates().get(1).getY());
+        assertEquals(expected.getZ(), result.getRates().get(1).getZ());
+    }
+    @Test
+    void testTwoBodiesXBothNegative() {
+        CelestialBody a = new CelestialBody("a", null, 10, new Vector(-32, -1, -21), new Vector(5, 5, 5));
+        CelestialBody b = new CelestialBody("b", null, 5, new Vector(-2, -10, -10), new Vector(3, 3, 3));
+        double G = 6.67430E-11;
+
+        ArrayList<CelestialBody> bodies = new ArrayList<>(); bodies.add(a); bodies.add(b);
+        State state = new State(bodies);
+
+        Vector distance = new Vector(-32-(-2), -1-(-10), -21-(-10)).normalize();
+        double dist = b.getLocation().dist(a.getLocation()); double f = G * 50 / (dist * dist);
+
+        RateOfChange result = (RateOfChange) function.call(0, state);
+        Vector expected = distance.mul(f).divide(b.getMass());
+
+        assertEquals(expected.getX(), result.getRates().get(1).getX());
+        assertEquals(expected.getY(), result.getRates().get(1).getY());
+        assertEquals(expected.getZ(), result.getRates().get(1).getZ());
+    }
+
+    @Test
+    void testTwoBodiesZeroAndPos() {
+        CelestialBody a = new CelestialBody("a", null, 10, new Vector(4,3,1),  new Vector (5,5,5) );
+        CelestialBody b = new CelestialBody("b", null, 5, new Vector(0,0,0),  new Vector (3,3,3) );
         double G = 6.67430E-11;
 
         ArrayList<CelestialBody> bodies = new ArrayList<>();
         bodies.add(a); bodies.add(b);
-
         State state = new State (bodies);
-        NewtonsFunction function = new NewtonsFunction();
+
+        Vector distance = new Vector(0-4,0-3,0-1).normalize();
+
+        double dist = a.getLocation().dist(b.getLocation());
+        double f = G*50/(dist*dist);
+
         RateOfChange result = (RateOfChange) function.call(0,state);
-        assertEquals(G*(50/12), result.getRates().get(0)); //expected is a vector not a value , FIIIIIIIIIIIIX THISSSSSS 
+        Vector expected = distance.mul(f).divide(a.getMass());
 
-
+        assertEquals(expected.getX(), result.getRates().get(0).getX());
+        assertEquals(expected.getY(), result.getRates().get(0).getY());
+        assertEquals(expected.getZ(), result.getRates().get(0).getZ());
     }
-    /* Testing addMul method, from class Rate  
-    */ 
+
     @Test
-    public void testAddMulRate (){
-        ArrayList<Vector> addRates = new ArrayList<>();
-        addRates.add(new Vector(2,3,4));
-        RateOfChange rate = new RateOfChange(addRates);
+    void testTwoBodiesZeroAndNeg() {
+        CelestialBody a = new CelestialBody("a", null, 10, new Vector(-3, -6, -12), new Vector(5, 5, 5));
+        CelestialBody b = new CelestialBody("b", null, 5, new Vector(0, 0, 0), new Vector(3, 3, 3));
+        double G = 6.67430E-11;
 
-        ArrayList<Vector> addRates2 = new ArrayList<>();
-        addRates2.add(new Vector(0,1,0));
-        RateOfChange rate2 = new RateOfChange(addRates2);
+        ArrayList<CelestialBody> bodies = new ArrayList<>(); bodies.add(a); bodies.add(b);
+        State state = new State(bodies);
 
+        Vector distance = new Vector(-3-0, -6-0, -12-0).normalize();
 
-        RateOfChange result = rate.addMul(-1, rate2);
-        assertEquals(result.accelerations.get(0).toString(), "(2.0,2.0,4.0)" );
+        double dist = b.getLocation().dist(a.getLocation());
+        double f = G * 50 / (dist * dist);
 
+        RateOfChange result = (RateOfChange) function.call(0, state);
+        Vector expected = distance.mul(f).divide(b.getMass());
+
+        assertEquals(expected.getX(), result.getRates().get(1).getX());
+        assertEquals(expected.getY(), result.getRates().get(1).getY());
+        assertEquals(expected.getZ(), result.getRates().get(1).getZ());
     }
-
-
 
 }
