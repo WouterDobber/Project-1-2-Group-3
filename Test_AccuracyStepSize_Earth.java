@@ -1,4 +1,4 @@
-public class AccuracyStepSize_Earth {
+public class Test_AccuracyStepSize_Earth {
 
     private static double CONVERSION_UNIT_NASA = 0.001;
 
