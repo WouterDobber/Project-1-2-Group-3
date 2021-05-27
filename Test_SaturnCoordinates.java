@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-public class TestSaturnCoordinates {
+public class Test_SaturnCoordinates {
     static final double ACCURACY = 1e4; // play around with this value 
     private static double CONVERSION_UNIT_NASA= 0.001;
 
