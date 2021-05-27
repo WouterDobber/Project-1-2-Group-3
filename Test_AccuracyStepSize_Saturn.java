@@ -1,4 +1,4 @@
-public class AccuracyStepSize_Saturn {
+public class Test_AccuracyStepSize_Saturn {
     private static double CONVERSION_UNIT_NASA = 0.001;
 
     public static void main (String [] args){
