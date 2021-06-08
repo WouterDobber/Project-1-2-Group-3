@@ -153,9 +153,65 @@ public class Probe implements ProbeSimulatorInterface {
 			}
 		}
 
-		// System.out.println("Time: " + time);
+
 
 		return min;
 	}
+	/*
+	 * Calculates the closest distance between the probe and titan in a given time.
+	 *
+	 * @param tf: total time
+	 *
+	 * @param h: steps
+	 *
+	 * @param p0: initial position
+	 *
+	 * @param v0: initial velocity
+	 *
+	 * @return shortest distance vector's absolute value
+	 */
 
+
+	public Vector closestVectorDistanceProbeTitan(Vector3dInterface p0, Vector3dInterface v0, double tf, double h) {
+		SolarSystem universe = new SolarSystem(); // create solarSystem
+		Vector closestDistanceReached=null;
+
+		// position and velocity dont need to be changed, because they are already
+		// relative to Earth , when the coordinates are created in ProbeCoordinates.
+		// create celestialBody probe
+		CelestialBody probe = new CelestialBody("Probe", rocket, 15000, p0, v0);
+
+		universe.add(probe); // add rocket to set of celestialBodies
+
+		// create classes needed to calculate the state of the solar system with steps
+		// h, from 0 to tf
+		ODEFunctionInterface function = new NewtonsFunction();
+		SolarSystemSolver solver = new SolarSystemSolver();
+		StateInterface state = new State(universe.bodies);
+
+		StateInterface[] StateOfSolarSystem = solver.solve(function, state, tf, h);
+		State initialState = (State) StateOfSolarSystem[0];
+
+		double min = initialState.celestialBodies.get(6).getLocation()
+				.dist(initialState.celestialBodies.get(11).getLocation()); // 6= titan, probe = 11
+		double euclideanDistance;
+		closestDistanceReached= (Vector) initialState.celestialBodies.get(6).getLocation().sub(initialState.celestialBodies.get(11).getLocation());
+
+		double time = 0;
+
+		for (int i = 1; i < StateOfSolarSystem.length; i++) {
+			initialState = (State) StateOfSolarSystem[i];
+			euclideanDistance = initialState.celestialBodies.get(6).getLocation()
+					.dist(initialState.celestialBodies.get(11).getLocation());
+			if (min > euclideanDistance) {
+				min = euclideanDistance;
+				closestDistanceReached = (Vector) initialState.celestialBodies.get(6).getLocation().sub(initialState.celestialBodies.get(11).getLocation());
+				closestDistanceReached = closestDistanceReached.absolute();
+				time = initialState.getTime();
+			}
+		}
+		// System.out.println("Time: " + time);
+
+		return closestDistanceReached;
+	}
 }
