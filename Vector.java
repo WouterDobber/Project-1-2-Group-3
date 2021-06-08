@@ -186,4 +186,13 @@ public class Vector implements Vector3dInterface {
 	public String toString() {
 		return "(" + x + "," + y + "," + z + ")";
 	}
+	
+		public Vector absolute() {
+		Vector result = new Vector();
+		// set the vector to the above described calculation
+		result.setX(Math.abs(this.getX()));
+		result.setY(Math.abs(this.getY()));
+		result.setZ(Math.abs(this.getZ()));
+		return result;
+	}
 }
