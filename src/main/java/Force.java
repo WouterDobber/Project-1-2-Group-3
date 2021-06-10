@@ -9,7 +9,7 @@ public class Force {
     public Force(double magnitude,  Vector3dInterface direction){
         this.magnitude = magnitude;
         this. direction = direction;
-
+        // https://www.wikihow.com/Calculate-Wind-Load
         // F = area * Presure wind * drag coefficient
         // if circle, drag coefficient = 0.47
         // pressure wind = constant * v^2
