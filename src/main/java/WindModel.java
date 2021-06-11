@@ -1,8 +1,7 @@
 import java.util.Random;
 public class WindModel {
 
-    //NEED TO ADD RANDOMNESS (line 15) , check with katherina about vertical noise
-
+    
     /** Method calculates the force of the wind based on a specific height
      * @param height of the lander, should be given in meters,
      * @param strength desired strength of the wind, given in %
@@ -12,18 +11,32 @@ public class WindModel {
        height = height/1000;  //dividing to transform it to km
        Random rand = new Random();  //based on random, this will define the strength of the wind
 
-        rand.nextGaussian();        //ASK ABOUT THIS
+        //Adding randomness with gaussian distribution so that middle points have higher chances to come up, the value of strength wont increase, only remaind the same or decrease.
+        double gauss = rand.nextGaussian();
+        if (Math.abs(gauss) >1){
+            gauss=1;
+        } else{
+            gauss = Math.abs(gauss);
+        }
+        strength *= gauss;
 
-        double velocityWind ; // magnitude
+       double velocityWind = 0; // magnitude
        Vector direction;
 
-        if (height==120 || height > 120 ){
+        if (height <=150 && height >120){
+            velocityWind= (100*strength) / 100; //based on report, lander started recording from 150 but strongest one was in 120, so randomly choosen 100 to be strongest possible
+        }
+        else if (height==120 ){
             velocityWind= (120*strength) / 100; //at a height of 120, the max wind is 120
-        } else if (height<120 && height>=60){
-            velocityWind =0; //no wind
-        } else if (height<60 && height>40 ){
-            velocityWind= 20;
-        } else {
+        } else if (height<120 && height>100) {
+            //call other method
+            velocityWind= linearCalculateWind(120, 100, strength, height) / 100;
+        }else if (height <=100 && height>= 60){
+            velocityWind = 0; //no wind
+        }
+        else if (height<60 && height>0 ){
+            velocityWind= (1*strength) / 100;
+        } else { //height ==0
             velocityWind = (0.3 *strength) / 100;
         }
 
@@ -39,6 +52,12 @@ public class WindModel {
 
         //multiply both velocity and direction with random component
         return new Force (velocityWind*1000, direction); //velocity*1000 to transform it to meters
+    }
+
+    public static double linearCalculateWind(int max, int min, double strength, double height){
+        double difference = max - min;
+        double positionInRange = height -min; //my position
+        return max * strength*  (positionInRange/difference) ;
     }
 
 }
