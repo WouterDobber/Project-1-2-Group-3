@@ -45,7 +45,7 @@ public class WindModel {
         if (height >6){ //west to east
             direction = new Vector (velocityWind*1000,verticalNoise,0);
         }else if ( height <6 && height>0.7) { //east to west
-            direction = new Vector(velocityWind*1000, verticalNoise, 0);
+            direction = new Vector(-velocityWind*1000, verticalNoise, 0);
         } else { //west to east
             direction = new Vector (velocityWind*1000,verticalNoise,0);
         }
