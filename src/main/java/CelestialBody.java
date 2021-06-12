@@ -22,14 +22,19 @@ public class CelestialBody {
 	 * @param vY   initial x-velocity of planet
 	 * @param vZ   initial x-velocity of planet
 	 */
-	public CelestialBody(String name, Image pic, double mass, double x, double y, double z, double vX, double vY,
-						 double vZ) {
+	public CelestialBody(String name, Image pic, double mass, double x, double y, double z, double vX, double vY, double vZ) {
 		this.name = name;
 		this.pic = pic;
-		this.radius = radius;
 		this.mass = mass;
 		this.location = new Vector(x, y, z);
 		this.velocity = new Vector(vX, vY, vZ);
+	}
+
+	public CelestialBody(String name, double mass, double x, double y, double z, double vX, double vY, double vZ) {
+		this.name = name;
+		this.mass = mass;
+		this.location = new Vector(x*1000, y*1000, z*1000);
+		this.velocity = new Vector(vX*1000, vY*1000, vZ*1000);
 	}
 	/**
 	 *
