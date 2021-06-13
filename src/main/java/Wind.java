@@ -34,7 +34,7 @@ public class Wind {
         } else if (height <= 100 && height >= 60) {
             velocityWind = 0; //no wind
         } else if (height < 60 && height > 0) {
-            velocityWind = (1 * strength) / 100;
+            velocityWind = linearCalculateWind(60, 1, strength, height) / 100;
         } else { //height ==0
             velocityWind = (0.3 * strength) / 100;
         }
