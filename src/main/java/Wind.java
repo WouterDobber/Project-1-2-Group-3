@@ -12,15 +12,13 @@ public class Wind {
         height = height / 1000;  //dividing to transform it to km
         Random rand = new Random();  //based on random, this will define the strength of the wind
 
-        //Adding randomness with gaussian distribution so that middle points have higher chances to come up, the value of strength wont increase, only remaind the same or decrease.
-        double gauss = rand.nextGaussian();
-        if (Math.abs(gauss) > 1) {
-            gauss = 1;
-        } else {
-            gauss = Math.abs(gauss);
+     //Adding randomness with gaussian distribution so that the standard deviation can increase or decrease the desired wind by 50%
+        double gauss = (rand.nextGaussian() /2 ) +1;
+        if (gauss < 0) {
+            gauss = 0;
         }
         strength *= gauss;
-
+        
         double velocityWind = 0; // magnitude
         Vector direction;
 
