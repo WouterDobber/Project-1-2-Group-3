@@ -46,7 +46,7 @@ public class Lander {
      * @return momentum of inertia pf sphere
      */
     public double getMomentumOfInertia() {
-        return (this.mass * Math.pow( this.radius, 2 )* 2)/5;
+        return (2.0/5.0)*this.mass * Math.pow( this.radius, 2 );
     }
 
     public double getRadius() {
