@@ -10,8 +10,9 @@ public class PhysicsEngine {
      * @param controllersDirection
      * @return new vector with updated accelerations in x, y and z (angular acceleration)
      */
-    public static Vector calculateAccelerations (Lander lander,  double bottomThursterForce, double controllersDirection){
-        double accelerationX = bottomThursterForce * Math.sin(lander.getAngle());
+    public static Vector calculateAccelerations (Lander lander,  double bottomThursterForce, double controllersDirection, double wind){
+        System.out.println("wind" + wind);
+        double accelerationX = (bottomThursterForce * Math.sin(lander.getAngle())) + wind;
         double accelerationY = bottomThursterForce * Math.cos(lander.getAngle()) + GRAVITATIONAL_FORCE;
         double accelerationTheta = ( lander.getRadius() * lander.getMaxControllerForce() * controllersDirection ) / lander.getMomentumOfInertia();
         return new Vector(accelerationX, accelerationY, accelerationTheta);
@@ -38,9 +39,15 @@ public class PhysicsEngine {
      * @param controllersDirection
      * @return new lander
      */
-    public static Lander step (Lander lander, double step, double bottomThrusterForce, double controllersDirection ){
-        Vector acceleration = calculateAccelerations(lander, bottomThrusterForce, controllersDirection);
+    public static Lander step (Lander lander, double step, double bottomThrusterForce, double controllersDirection, double strengthOfWind ){
+        Vector acceleration;
+        if(strengthOfWind > 0 ){
+            double wind = Wind.wind(lander.getPosition().getY(), strengthOfWind);
+            acceleration = calculateAccelerations(lander, bottomThrusterForce, controllersDirection, wind);
+        } else {
+            acceleration = calculateAccelerations(lander, bottomThrusterForce, controllersDirection, 0);
+        }
         return  eulerSolver(lander, step, acceleration);
     }
-    
+
 }
