@@ -18,32 +18,7 @@ class OpenLoop {
         return t;
     }
 
-    /**
-     * It calculates the angle at a certain time
-     * @param lander
-     * @param t
-     * @param angularAcceleration
-     * @return angle
-     */
-    public static double getAngleAfterT(Lander lander, double t, double angularAcceleration){
-        double theta = lander.getAngle() + ( lander.getAngularVelocity() * t ) + ( angularAcceleration * Math.pow(t, 2) / 2 );
-        return theta;
-    }
 
-    /**
-     * Calculates the time taken to decent in y-axis.
-     * t= (vf - v0 )/ a
-     * @param lander
-     * @param changeOfYDuringFlight
-     * @param velocityChangeDuringLFight
-     * @param accelerationYaxis
-     * @return time
-     */
-    public static double decentYaxis(Lander lander, double changeOfYDuringFlight, double velocityChangeDuringLFight, double accelerationYaxis){
-        double a= accelerationYaxis;                                                                             //update
-        double t = (0 -( lander.getVelocity().getY() + velocityChangeDuringLFight)) / a;
-        return t;
-    }
 
     /**
      * Calculates given an initial velocity, calculates the time required to free fall 1/4 of the entire distance.
@@ -52,61 +27,16 @@ class OpenLoop {
      * @return  time
      */
     public static double VerticalFreeFallTime(Lander lander, double initialVelocity){
-        double t2= Math.sqrt(lander.getPosition().getY()/(2*-G)) ;
+        double t2= Math.sqrt( lander.getPosition().getY()/(-5*G)) ; //t= sqr(2h/g) and because is 1/10 we multiply it by it
 
-        double t3= 2* lander.getPosition().getY()-initialVelocity;
-        double t= -initialVelocity + Math.sqrt(Math.pow(initialVelocity,2) - ((4*-G/2)* ( -(1/4)*lander.getPosition().getY())));
-        t= t/-G;
-        return t;
-    }
-
-    /**
-     * Calculates the vertical acceleration
-     * a= v0^2 / (2* y0)
-     * @param lander
-     * @param initialVelocity
-     * @return acceleration
-     */
-    public static double VerticalAcceleration (Lander lander, double initialVelocity){
-        double acceleration = Math.pow(initialVelocity,2) / (2*lander.getPosition().getY());
-        return acceleration;
-    }
-
-    /** Time needed to reach 0 in y-axis.
-     * time = v0 / a
-     * @param lander
-     * @param acceleration
-     * @param initialVelocity
-     * @return time
-     */
-    public static double VerticalTime (Lander lander, double acceleration, double initialVelocity){
-        return initialVelocity/acceleration;
-    }
-
-    /**
-     * u= ( v0^2 / 2*y0 )-G
-     * @param lander
-     * @param initialVelocity
-     * @return
-     */
-    public static double VerticalMainThrusterForce(Lander lander, double initialVelocity){
-        double u = (Math.pow(initialVelocity, 2) / (2* lander.getPosition().getY())) - G;
-        return u;
+        return t2;
     }
 
 
-    public static double accelerationYaxis (Lander lander, double changeOfPositionDuringFlight,  double velocityChangeDuringLFight) {
-        double a = Math.pow(lander.getVelocity().getY() + velocityChangeDuringLFight, 2) / (2 * (lander.getPosition().getY() + changeOfPositionDuringFlight));
-        return a;
-    }
-
-        public static double changeInYDuringFreeFall(Lander lander, double time){ //it returns the distance the lander moves in free fall (y)
-        double newPosition = lander.getVelocity().getY()*time + lander.getPosition().getY() - ( (G / 2) * Math.pow(time, 2)); //x = x0 + v0*t + 1/2 * a * t^2
-        return lander.getPosition().getY() - newPosition;
-    }
-
-    public static double velocityAfterFreeFall(Lander lander, double time){
-        return lander.getVelocity().getY() + (G * time);
+    public static double angleGivenTime(double initialVelocity, double time, double initialAngle, Lander lander){
+        double angularAccel = (lander.getMaxControllerForce() * lander.getRadius()) / lander.getMomentumOfInertia();
+        double theta = initialAngle + initialVelocity*time + (angularAccel* (Math.pow(time,2)/2));
+        return theta;
     }
 
     /**
@@ -139,22 +69,64 @@ class OpenLoop {
      * @return time needed to get to x=0
      */
     public static double horizontalFlightTimeToX0(Lander lander, double acceleration){
-        double time = (Math.sqrt( Math.abs( ( -2 * lander.getPosition().getX() ) / acceleration))); //THIS RESULTS IN NAN
+        double time = Math.sqrt(  ( -2 * lander.getPosition().getX() ) / acceleration); //THIS RESULTS IN NAN
         return time;
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public static ArrayList[] fullFlight(Lander lander, double stepSize) {
+
+    public static ArrayList[] verticalFlight(Lander lander, double stepSize){
         ArrayList<Double> mainThruster = new ArrayList<Double>();
         ArrayList<Double> controllers = new ArrayList<Double>();
         double sectionStartTime = 0;
         double totalTime = 0;
-        double rotationTime =0;
+
+        double timeFreeFall = VerticalFreeFallTime(lander, G);
+
+        sectionStartTime = totalTime;
+        totalTime += timeFreeFall;
+        totalTime=  Math.round(totalTime);
+
+        for (double i = sectionStartTime; i < totalTime; i += stepSize) {
+            mainThruster.add(0.0);
+            controllers.add(0.0);
+        }
+
+        // Controlled  decenent
+        double initialVelocityY= G*totalTime;
+        double changeInPosition = 0.5*G*  Math.pow(timeFreeFall, 2);
+        double accelerationY = Math.pow(initialVelocityY,2) / (2*(lander.getPosition().getY() + changeInPosition));
+        double timeForDecent = (initialVelocityY)/ -accelerationY;
+
+        double forceThruster= ((Math.pow(initialVelocityY, 2) / (2* (lander.getPosition().getY()  + changeInPosition))) )- G ;
+        sectionStartTime = totalTime;
+        totalTime += timeForDecent;
+
+        totalTime=  Math.round(totalTime);
+
+        for (double i = sectionStartTime; i < totalTime; i += stepSize) {
+            mainThruster.add(forceThruster);
+            controllers.add(0.0);
+        }
+        return new ArrayList[]{mainThruster, controllers};
+
+    }
+    /**
+     * Simulates the landing
+     * @param lander
+     * @param stepSize
+     * @return Array with Forces of main trhuster and controllers (direction or if is on or off)
+     */
+    public static ArrayList[] horizontalFlight(Lander lander, double stepSize) {
+        ArrayList<Double> mainThruster = new ArrayList<Double>();
+        ArrayList<Double> controllers = new ArrayList<Double>();
+        double sectionStartTime = 0;
+        double totalTime = 0;
+
         // First rotation
         // Acceleration
         double changeInAngel = (Math.PI / 4);
         double halfTimeToTurnTo45 = calculateHalfRotateTime(changeInAngel, lander);
-        rotationTime+= 2*halfTimeToTurnTo45;
 
 
 
@@ -169,18 +141,18 @@ class OpenLoop {
             mainThruster.add(0.0);
             controllers.add(-1.0);
         }
-        lander.setAngle(Math.PI / 4); //updating lander
+        // double newAngle =  angleGivenTime(0,   totalTime, 0,  lander);
+        lander.setAngle(Math.PI/4); //updating lander
 
         // 1 st horizontal flight
         // Acceloration
         double mainThrustForce = horizontalFlightForceMainThruster(lander);
         double xAcc = horizontalFlightXAcc(lander, mainThrustForce);
-        double horizTime = horizontalFlightTimeToX0(lander, xAcc) ;
+        double horizTime = horizontalFlightTimeToX0(lander, xAcc)+5;
         sectionStartTime = totalTime;
         totalTime += (horizTime / 2);
 
         for (double i = sectionStartTime; i < totalTime; i += stepSize) {
-
             mainThruster.add(mainThrustForce);
             controllers.add(0.0);
         }
@@ -188,7 +160,6 @@ class OpenLoop {
         lander.setPositionX(lander.getPosition().getX()/2); //update x
         // 90 degree roation to - 45
         double halfTimeToTurn90 = calculateHalfRotateTime(Math.PI / 2, lander);
-        rotationTime += 2*halfTimeToTurn90;
 
         sectionStartTime = totalTime;
         totalTime += halfTimeToTurn90;
@@ -221,7 +192,6 @@ class OpenLoop {
         // acceleration
         sectionStartTime = totalTime;
         totalTime += (halfTimeToTurnTo45);
-        rotationTime += 2*halfTimeToTurnTo45;
         for (double i = sectionStartTime; i < totalTime; i += stepSize) {
             mainThruster.add(0.0);
             controllers.add(1.0);
@@ -237,61 +207,115 @@ class OpenLoop {
 
         lander.setAngle(0); //update angle
 
-        // Free fall
-
-        double timeFreeFall = VerticalFreeFallTime(lander, G);
-
-        sectionStartTime = totalTime;
-        totalTime += (timeFreeFall);
-
-        for (double i = sectionStartTime; i < totalTime; i += stepSize) {
-           mainThruster.add(0.0);
-           controllers.add(0.0);
-        }
-
-
-        //double distancedTravelledDuringFreeFall = changeInYDuringFreeFall(lander, time180Roataion);
-        //double velocityAfterFreeFall = velocityAfterFreeFall(lander, time180Roataion);
-
-
-        // Controlled decent
-        /**
-        double accelerationY = accelerationYaxis(lander, 0, G*totalTime); // ay = u*cos(theta) -g;
-        double timeForDecent = decentYaxis(lander, 0, G, accelerationY);
-         double forceThruster = (accelerationY- G)/Math.cos(lander.getAngle());
-        */
-        double accelerationY= VerticalAcceleration(lander, G*rotationTime);
-        double timeForDecent= VerticalTime(lander, accelerationY, G*timeFreeFall+ G*rotationTime);
-        double forceThruster =  VerticalMainThrusterForce(lander, G*timeForDecent );
-        sectionStartTime = totalTime;
-        totalTime += timeForDecent;
-
-        for (double i = sectionStartTime; i < totalTime; i += stepSize) {
-            mainThruster.add(forceThruster);
-            controllers.add(0.0);
-        }
-
         return new ArrayList[]{mainThruster, controllers};
     }
 
     /**
      * Method calcultes the coordinates needed by the lander to decendt
-     * @return positions of lander as a vector with x and y coordinates and z= angle on inclination. 
+     * @return positions of lander as a vector with x and y coordinates and z= angle on inclination.
      */
-    public static Vector[] getCoordinatesForLander(){
-        Lander testFlight = new Lander(new Vector(0,0,0), new Vector(-10000,20000,0), 6000, 1000, 440);
-        Lander copyOfTestFlight = testFlight.copy();
+    public static Vector[]   getCoordinatesForLander(Lander lander, double windStrength){
+        double step =1;
+        Lander verticalFlightLander = lander;
+        //new Lander(new Vector(0,0,0), new Vector(0,60000,0), 6000, 10, 440);
+        Lander copyOfTestFlight = verticalFlightLander.copy();
 
-        ArrayList<Double>[] res = fullFlight(testFlight, 1);
-        Vector [] positions = new Vector [res[0].size()];
-        double step = 1;
-        for (int i =0; i<res[0].size(); i++){
-            copyOfTestFlight = PhysicsEngine.step(copyOfTestFlight, step, res[0].get(i), res[1].get(i));
-            positions[i]= copyOfTestFlight.getPosition();
+        ArrayList<Double>[] descentVertical = verticalFlight(verticalFlightLander, step);
+
+        Vector[] res = new Vector[descentVertical[0].size()];
+
+
+        for (int i =0; i<descentVertical[0].size(); i++){
+
+            copyOfTestFlight = PhysicsEngine.step(copyOfTestFlight, step, descentVertical[0].get(i), descentVertical[1].get(i), windStrength);
+            res[i] = copyOfTestFlight.getPosition();
+
         }
-        return positions;
+        System.out.println(copyOfTestFlight);
+        return res;
     }
-   
+
+    public static Vector[]   getXCoordinatesForLander(double windStrength){
+        double step =0.5;
+        Lander verticalFlightLander = new Lander(new Vector(0,0,0), new Vector(-10000,60000,0), 6000, 5, 440);
+        Lander copyOfTestFlight = verticalFlightLander.copy();
+
+        ArrayList<Double>[] horizFLight = horizontalFlight(verticalFlightLander, step);
+
+        Vector[] res = new Vector[horizFLight[0].size()];
+
+        for (int i =0; i<horizFLight[0].size(); i++){
+
+            copyOfTestFlight = PhysicsEngine.step(copyOfTestFlight, step, horizFLight[0].get(i), horizFLight[1].get(i), windStrength);
+            res[i] = copyOfTestFlight.getPosition();
+
+        }
+        return res;
+    }
+
+
+    public static Vector[]   getPosCoordinatesForFullFlight(double windStrength){
+        Vector[] horizCoords = getXCoordinatesForLander(windStrength);
+        Lander lander = new Lander(new Vector(0,0,0), new Vector(horizCoords[horizCoords.length-1].getX(),horizCoords[horizCoords.length-1].getY(),0), 6000, 10, 440);
+        Vector[] vertCoords = getCoordinatesForLander(lander, windStrength);
+        Vector[] fullFlightCoords = new Vector[horizCoords.length + vertCoords.length];
+        int index = horizCoords.length;
+
+        for (int i = 0; i < horizCoords.length; i++) {
+            fullFlightCoords[i] = horizCoords[i];
+        }
+        for (int i = 0; i < vertCoords.length; i++) {
+            fullFlightCoords[i + index] = vertCoords[i];
+        }
+        return fullFlightCoords;
+    }
+//WORKING ON THIS 
+
+    public static boolean isSucessfulLanding(Lander lander){
+        double error = 50;
+        Vector goalPosition = new Vector(-2417,0,0);
+        Vector goalVelocity = new Vector(0,0,0);
+        boolean acurrate = true;
+
+        if(Math.abs(lander.getPosition().getX() - goalPosition.getX() ) > error){
+            acurrate = false;
+        }
+        if(Math.abs(lander.getPosition().getY() - goalPosition.getY() ) > error){
+            acurrate = false;
+        }
+        if(Math.abs(lander.getPosition().getZ() - goalPosition.getZ() ) > error){
+            acurrate = false;
+        }
+        if(Math.abs(lander.getVelocity().getX() - goalVelocity.getX() ) > error){
+            acurrate = false;
+        }
+        if(Math.abs(lander.getVelocity().getY() - goalVelocity.getY() ) > error){
+            acurrate = false;
+        }
+        if(Math.abs(lander.getVelocity().getZ() - goalVelocity.getZ() ) > error){
+            acurrate = false;
+        }
+
+
+
+        return acurrate;
+
+    }
+
+
+
+
+
+    public static void main(String[] args) {
+        double windStrength = 0;
+        Vector[] fullFlight = getPosCoordinatesForFullFlight(windStrength);
+        for (Vector pos: fullFlight){
+            System.out.println(pos);
+        }
+
+
+
+    }
 
 
 }
