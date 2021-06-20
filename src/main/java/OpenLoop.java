@@ -152,7 +152,7 @@ class OpenLoop {
         sectionStartTime = totalTime;
         totalTime += (horizTime / 2);
 
-        for (double i = sectionStartTime; i < totalTime; i += stepSize) {
+        for (double i = sectionStartTime; i <= totalTime; i += stepSize) {
             mainThruster.add(mainThrustForce);
             controllers.add(0.0);
         }
@@ -214,7 +214,7 @@ class OpenLoop {
      * Method calcultes the coordinates needed by the lander to decendt
      * @return positions of lander as a vector with x and y coordinates and z= angle on inclination.
      */
-    public static Vector[]   getCoordinatesForLander(Lander lander, double windStrength){
+    public static Lander[]   getCoordinatesForLander(Lander lander, double windStrength){
         double step =1;
         Lander verticalFlightLander = lander;
         //new Lander(new Vector(0,0,0), new Vector(0,60000,0), 6000, 10, 440);
@@ -222,43 +222,43 @@ class OpenLoop {
 
         ArrayList<Double>[] descentVertical = verticalFlight(verticalFlightLander, step);
 
-        Vector[] res = new Vector[descentVertical[0].size()];
+        Lander[] res = new Lander[descentVertical[0].size()];
 
 
         for (int i =0; i<descentVertical[0].size(); i++){
 
             copyOfTestFlight = PhysicsEngine.step(copyOfTestFlight, step, descentVertical[0].get(i), descentVertical[1].get(i), windStrength);
-            res[i] = copyOfTestFlight.getPosition();
+            res[i] = copyOfTestFlight;
 
         }
         System.out.println(copyOfTestFlight);
         return res;
     }
 
-    public static Vector[]   getXCoordinatesForLander(double windStrength){
+    public static Lander[]   getXCoordinatesForLander(double windStrength){
         double step =0.5;
         Lander verticalFlightLander = new Lander(new Vector(0,0,0), new Vector(-10000,60000,0), 6000, 5, 440);
         Lander copyOfTestFlight = verticalFlightLander.copy();
 
         ArrayList<Double>[] horizFLight = horizontalFlight(verticalFlightLander, step);
 
-        Vector[] res = new Vector[horizFLight[0].size()];
+        Lander[] res = new Lander[horizFLight[0].size()];
 
         for (int i =0; i<horizFLight[0].size(); i++){
 
             copyOfTestFlight = PhysicsEngine.step(copyOfTestFlight, step, horizFLight[0].get(i), horizFLight[1].get(i), windStrength);
-            res[i] = copyOfTestFlight.getPosition();
+            res[i] = copyOfTestFlight;
 
         }
         return res;
     }
 
 
-    public static Vector[]   getPosCoordinatesForFullFlight(double windStrength){
-        Vector[] horizCoords = getXCoordinatesForLander(windStrength);
-        Lander lander = new Lander(new Vector(0,0,0), new Vector(horizCoords[horizCoords.length-1].getX(),horizCoords[horizCoords.length-1].getY(),0), 6000, 10, 440);
-        Vector[] vertCoords = getCoordinatesForLander(lander, windStrength);
-        Vector[] fullFlightCoords = new Vector[horizCoords.length + vertCoords.length];
+    public static Lander[]   getPosCoordinatesForFullFlight(double windStrength){
+        Lander[] horizCoords = getXCoordinatesForLander(windStrength);
+        Lander lander = new Lander(new Vector(0,0,0), new Vector(horizCoords[horizCoords.length-1].getPosition().getX(),horizCoords[horizCoords.length-1].getPosition().getY(),0), 6000, 10, 440);
+        Lander[] vertCoords = getCoordinatesForLander(lander, windStrength);
+        Lander[] fullFlightCoords = new Lander[horizCoords.length + vertCoords.length];
         int index = horizCoords.length;
 
         for (int i = 0; i < horizCoords.length; i++) {
@@ -269,7 +269,7 @@ class OpenLoop {
         }
         return fullFlightCoords;
     }
-//WORKING ON THIS 
+
 
     public static boolean isSucessfulLanding(Lander lander){
         double error = 50;
@@ -303,19 +303,11 @@ class OpenLoop {
     }
 
 
-
-
-
     public static void main(String[] args) {
         double windStrength = 0;
-        Vector[] fullFlight = getPosCoordinatesForFullFlight(windStrength);
-        for (Vector pos: fullFlight){
-            System.out.println(pos);
+        Lander[] fullFlight = getPosCoordinatesForFullFlight(windStrength);
+        for (Lander land: fullFlight){
+            System.out.println(land.getPosition());
         }
-
-
-
     }
-
-
 }
