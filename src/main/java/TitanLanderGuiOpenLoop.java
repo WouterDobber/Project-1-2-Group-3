@@ -31,23 +31,23 @@ class LanderCanvas extends JComponent {
 
     public LanderCanvas() {
         try {
-            landerImage = ImageIO.read(new File("solarimages/lander.png"));
-            backgroundImage = ImageIO.read(new File("solarimages/sad.jpg"));
+            landerImage = ImageIO.read(new File("lander.png"));
+            backgroundImage = ImageIO.read(new File("sad.jpg"));
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        double wind = 0; //SET UP WIND STRENGTH , UP TO 1 or 2  seems to work ok-ish
-        Vector[] coordinates = OpenLoop.getPosCoordinatesForFullFlight(wind);
+        double wind = 0;
+        Lander[] landerPositions = OpenLoop.getPosCoordinatesForFullFlight(wind);
         Thread animationThread = new Thread(new Runnable() {
             public void run() {
-                for (int i=0; i < coordinates.length;i++) {
-                    landerPos = coordinates[i];
+                for (int i=0; i < landerPositions.length;i++) {
+                    landerPos = landerPositions[i].getPosition();
                     repaint();
                     try {Thread.sleep(10);} catch (Exception ex) {}
                 }
-                //System.out.println("Final pos");
-                //System.out.println(landerPos);
+                System.out.println("Final pos");
+                System.out.println(landerPos);
 
             }
         });
@@ -66,8 +66,8 @@ class LanderCanvas extends JComponent {
         int landerX = 3 * (int) (landerPos.getX()/100+200);
         int landerY = (int) SCREEN_HEIGHT - (int) (landerPos.getY()/150+175);
 
-        //System.out.println(landerX);
-        //System.out.println(landerY);
+        System.out.println(landerX);
+        System.out.println(landerY);
 
         g.drawImage(scaledLanderImage, landerX, landerY, this);
 
