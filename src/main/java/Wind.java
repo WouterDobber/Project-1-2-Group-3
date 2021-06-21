@@ -2,7 +2,7 @@ import java.util.Random;
 
 public class Wind {
     final static  double AREA = 78; //of the lander in m^2
-    final static double PRESSURE_CONSTANT = 0.00256;  //need to CHANGE it
+    final static double PRESSURE_CONSTANT = 1.47*0.613;  //Titans athmosphere is 1.47 higher than earths
     final static double dragCoefficient = 0.47; //dependent on shape of lander: sphere
     /**
      * Method calculates the force of the wind based on a specific height, Assuming only possible one direction
@@ -44,7 +44,7 @@ public class Wind {
         // F = area * Presure wind * drag coefficient
         // if circle, drag coefficient = 0.47
         // pressure wind = constant * v^2
-        double pressureWind = PRESSURE_CONSTANT * velocityWind*velocityWind; //velocity*1000 to transform it to meters
+        double pressureWind = PRESSURE_CONSTANT * velocityWind*velocityWind; 
         double windForce = AREA * pressureWind * dragCoefficient;
 
         //direction of the wind changes twice
