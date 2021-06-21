@@ -21,14 +21,14 @@ public class RunSolarSystemSimulation implements ActionListener {
 	// used to be the astronomic unit, i changed it a bit by playing around.
 
 	public static void main(String[] args) {
-		new Run();
+		new RunSolarSystemSimulation();
 	}
 
 	private JFrame frame = new JFrame();
 	public SolarSystem solarSystem = new SolarSystem();
 	static State state;
 
-	public Run() {
+	public RunSolarSystemSimulation() {
 		start();
 	}
 
