@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.*;
 import java.awt.*;
 
-public class Run implements ActionListener {
+public class RunSolarSystemSimulation implements ActionListener {
 	JPanel buttons = new JPanel();
 	private static int scaleFactor = 1;
 	private static int maxScale = 12;
