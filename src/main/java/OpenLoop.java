@@ -235,7 +235,7 @@ class OpenLoop {
             res[i] = copyOfTestFlight;
 
         }
-        System.out.println(copyOfTestFlight);
+       // System.out.println(copyOfTestFlight);
         return res;
     }
 
