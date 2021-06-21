@@ -2,8 +2,6 @@ import java.util.concurrent.TimeUnit;
 
 public class PID {
     private double target;
-    private double minBounds;
-    private double maxBounds;
     private double p;
     private double i;
     private double d;
@@ -11,15 +9,14 @@ public class PID {
     private double iError;
     private long lastTime = 0;
 
-    // check it out: https://ru.wikipedia.org/wiki/ПИД-регулятор
-    public PID(double target, double minBounds, double maxBounds, double p, double i, double d) {
+
+    public PID(double target, double p, double i, double d) {
         this.target = target;
-        this.minBounds = minBounds;
-        this.maxBounds = maxBounds;
         this.p = p;
         this.i = i;
         this.d = d;
     }
+
 
     public double update(double currentValue) {
         if(lastTime == 0) {
@@ -33,15 +30,18 @@ public class PID {
         if(dt == 0)
             return 0;
 
+        // calculate the error
         double pError = target - currentValue;
+        // calculate the integral
+        iError += pError * dt;
+        // calculate the derivative
         double dError = (pError - lastPError) / dt;
 
-        if(iError < maxBounds && iError > minBounds)
-            iError += pError * dt;
-
+        // updating temp variables
         lastTime = currentTime;
         lastPError = pError;
 
+        // formula of the PID controller
         return p * pError + i * iError + d * dError;
     }
 
