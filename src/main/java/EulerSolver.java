@@ -1,8 +1,13 @@
 import java.util.ArrayList;
 
 public class EulerSolver {
-    /**ODE Solver using Euler's first order method 
+    /**
+   * ODE Solver using Euler's first order method
    * wi+1= wi + h*f(ti, wi)
+   * param castedRate
+   * param celestialBodies
+   * @param step size 
+   * @return new state 
    */ 
     public static StateInterface EulerSolve(RateOfChange castedRate, ArrayList<CelestialBody> celestialBodies, double step){
 
