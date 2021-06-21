@@ -1,3 +1,6 @@
+/**This class was used for experiments in Phase 2, the relative error is computed for different step sizes. 
+*
+**/ 
 public class AccuracyStepSizeSaturnExperiment {
     private static double CONVERSION_UNIT_NASA = 0.001;
 
