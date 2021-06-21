@@ -31,8 +31,8 @@ class LanderCanvas extends JComponent {
 
     public LanderCanvas() {
         try {
-            landerImage = ImageIO.read(new File("lander.png"));
-            backgroundImage = ImageIO.read(new File("sad.jpg"));
+            landerImage = ImageIO.read(new File("src/main/java/solarimages/lander.png"));
+            backgroundImage = ImageIO.read(new File("src/main/java/solarimages/sad.jpg"));
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
