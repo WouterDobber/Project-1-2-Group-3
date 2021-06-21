@@ -4,7 +4,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
-public class TitanLanderGuiOpenLoop {
+public class RunLanderGuiOpenLoop {
 
     private final static int SCREEN_WIDTH       = 750;
     private final static int SCREEN_HEIGHT      = 750;
