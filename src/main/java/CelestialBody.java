@@ -29,7 +29,19 @@ public class CelestialBody {
 		this.location = new Vector(x, y, z);
 		this.velocity = new Vector(vX, vY, vZ);
 	}
-
+	
+	/**
+	 * Constructor
+	 *
+	 * @param name the name of the planet
+	 * @param mass mass of planet
+	 * @param x    initial x-coordinate of planet
+	 * @param y    initial y-coordinate of planet
+	 * @param z    initial z-coordinate of planet
+	 * @param vX   initial x-velocity of planet
+	 * @param vY   initial x-velocity of planet
+	 * @param vZ   initial x-velocity of planet
+	 */
 	public CelestialBody(String name, double mass, double x, double y, double z, double vX, double vY, double vZ) {
 		this.name = name;
 		this.mass = mass;
@@ -53,7 +65,10 @@ public class CelestialBody {
 		this.velocity = velocity;
 	}
 
-
+	/**
+	 * It returns a copy of the celestial body 
+	 *
+	 */
 	public CelestialBody duplicate (){
 		return new CelestialBody(name, pic, mass, location, velocity);
 	}
