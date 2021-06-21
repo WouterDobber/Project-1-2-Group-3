@@ -11,7 +11,7 @@ public class PhysicsEngine {
      * @return new vector with updated accelerations in x, y and z (angular acceleration)
      */
     public static Vector calculateAccelerations (Lander lander,  double bottomThursterForce, double controllersDirection, double wind){
-        System.out.println("wind" + wind);
+        //System.out.println("wind" + wind);
         double accelerationX = (bottomThursterForce * Math.sin(lander.getAngle())) + wind;
         double accelerationY = bottomThursterForce * Math.cos(lander.getAngle()) + GRAVITATIONAL_FORCE;
         double accelerationTheta = ( lander.getRadius() * lander.getMaxControllerForce() * controllersDirection ) / lander.getMomentumOfInertia();
