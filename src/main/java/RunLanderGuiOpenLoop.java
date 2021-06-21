@@ -46,8 +46,8 @@ class LanderCanvas extends JComponent {
                     repaint();
                     try {Thread.sleep(10);} catch (Exception ex) {}
                 }
-                System.out.println("Final pos");
-                System.out.println(landerPos);
+                //System.out.println("Final pos");
+                //System.out.println(landerPos);
 
             }
         });
@@ -66,8 +66,8 @@ class LanderCanvas extends JComponent {
         int landerX = 3 * (int) (landerPos.getX()/100+200);
         int landerY = (int) SCREEN_HEIGHT - (int) (landerPos.getY()/150+175);
 
-        System.out.println(landerX);
-        System.out.println(landerY);
+        //System.out.println(landerX);
+        //System.out.println(landerY);
 
         g.drawImage(scaledLanderImage, landerX, landerY, this);
 
