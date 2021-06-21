@@ -6,16 +6,17 @@ RunLanderGuiOpenLoop.java) and a Feedback Controller were implemented for coordi
  Newton Raphson (NewtonRaphson.java) to improve the results from phase 2. 
 
 To run the code that shows the GUI, there are different options or classes that could be executed based on what is wanted:
+ Traverse to the correct folder in your command window throw: src/main/java
 1. Solar system simulation:
-    Traverse to the correct folder in your command window and compile Run.java ("javac Run.java"). This should compile all of the necessary files as well.
+    Compile RunSolarSystemSimulation.java ("javac RunSolarSystemSimulation.java"). This should compile all of the necessary files as well.
     From there on, running the file ("java RunSolarSystemSimulation") should open the 2D window and show the rocket's trajectory to Titan and back.
 
 2. Landing open loop controller:
-    Traverse to the correct folder in your command window and compile Run.java ("javac Run.java"). This should compile all of the necessary files as well.
+    Compile RunLanderGuiOpenLoop.java ("javac RunLanderGuiOpenLoop.java"). This should compile all of the necessary files as well.
     From there on, running the file ("java RunLanderGuiOpenLoop") should open the 2D animation and show the landers trajectory.
 
 3. Landing feedback controller:
-   Traverse to the correct folder in your command window and compile Run.java ("javac Run.java"). This should compile all of the necessary files as well.
+   Compile RunLanderGuiFeedbackController.java ("javac RunLanderGuiFeedbackController.java"). This should compile all of the necessary files as well.
    From there on, running the file ("java RunLanderGuiFeedbackController") should open the 2D animation and show the landers trajectory.
 
 
