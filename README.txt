@@ -5,6 +5,8 @@ RunLanderGuiOpenLoop.java) and a Feedback Controller were implemented for coordi
 (related files: Thruster.java, LandSystem.java, PID.java, RunLanderGuiClosedLoop.java ), a wind model for simulating real conditions (Wind.java) and a 
  Newton Raphson (NewtonRaphson.java) to improve the results from phase 2. 
 
+If you want to run the code from command line follow the next steps, otherwise, if running from an IDE, the path name of the images needs to be change in the class that you will be running, for instance, if you want to run RunLaderGuiOpenLoop.java go to the respective lines were the images are being open and change them to be "src/main/java/solarimages/lander.png" instead of "solarimages/lander.png". 
+
 To run the code that shows the GUI, there are different options or classes that could be executed based on what is wanted:
  Traverse to the correct folder in your command window throw: src/main/java
 1. Solar system simulation:
