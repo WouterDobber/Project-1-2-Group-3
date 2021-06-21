@@ -54,7 +54,7 @@ public class RunLanderGuiClosedLoop {
 
         @Override
         public void paintComponent(Graphics g) {
-            try {backgroundImage = ImageIO.read(new File("src/solarimages/sad.jpg"));}
+            try {backgroundImage = ImageIO.read(new File("solarimages/sad.jpg"));}
             catch(Exception e) {e.printStackTrace();}
 
             g.drawImage(backgroundImage, 0, 0, this);
@@ -84,7 +84,7 @@ public class RunLanderGuiClosedLoop {
                 }
             }
             try{
-                Image landerImage = ImageIO.read(new File("src/solarimages/lander.png"));
+                Image landerImage = ImageIO.read(new File("solarimages/lander.png"));
                 Image scaledLanderImage = landerImage.getScaledInstance(50,50, Image.SCALE_DEFAULT);
                 g.drawImage(scaledLanderImage, (int) (screen.getX() - (25)), (int) (screen.getY() - (45)), this);
             }
