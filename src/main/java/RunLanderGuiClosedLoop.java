@@ -22,8 +22,8 @@ public class RunLanderGuiClosedLoop {
             landingModule.updatePosition();
             landingModule.update();
             if(landingModule.getLocation().getY() < 0.001){
-                System.out.println(landingModule.getLocation().getX());
-                System.out.println(landingModule.getVelocity().getY());
+                //System.out.println(landingModule.getLocation().getX());
+                //System.out.println(landingModule.getVelocity().getY());
                 break;
             }
             ui.repaint();
