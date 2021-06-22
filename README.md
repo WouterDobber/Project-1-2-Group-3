@@ -1,5 +1,5 @@
 The structure of the code includes the implementation of the interfaces given in Phase 1 and a Genetic Algorithm (GA.java),  as well as all solvers implemented in phase 2 (EulerSolver.java , RungeKuttaSolver.java and VerletSolver.java)
-and the fuel system (FuelSolver.java, SolarSystemSolver.java)
+and the fuel system (FuelSolver.java, SolarSystemSolver.java). 
 For this final phase, an Open Loop controller  (related files: Lander.java, OpenLoop.java, PhysicsEngine.java and 
 RunLanderGuiOpenLoop.java) and a Feedback Controller were implemented for coordinating the landing of the lander
 (related files: Thruster.java, LandSystem.java, PID.java, RunLanderGuiClosedLoop.java ), a wind model for simulating real conditions (Wind.java) and a 
