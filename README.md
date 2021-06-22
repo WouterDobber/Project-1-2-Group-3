@@ -22,7 +22,7 @@ To run the code that shows the GUI, there are different options or classes that 
    From there on, running the file ("java RunLanderGuiFeedbackController") should open the 2D animation and show the landers trajectory.
 
 
-As part of the requirements for phase 2, test classes were created and can be found under  Project-1-2-Group-3/src/test/java/
+As part of the requirements for phase 2, test classes were created and can be found following the Gradle structure. 
 Finally, 2 classes that test the accuracy of our ODEsolver with the correct results of coordinates from NASA can be found under the names Test_SaturnCoordinates.java and Test_EarthCoordinates.java,
 to change which solver is being tested, comment in the one you prefer in class State.java lines 58-66.
 
