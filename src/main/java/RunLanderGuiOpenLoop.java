@@ -64,7 +64,7 @@ class LanderCanvas extends JComponent {
 
         Image scaledLanderImage = landerImage.getScaledInstance(50,50, Image.SCALE_DEFAULT);
         int landerX = 3 * (int) (landerPos.getX()/100+200);
-        int landerY = (int) SCREEN_HEIGHT - (int) (landerPos.getY()/150+175);
+        int landerY = (int) SCREEN_HEIGHT - (int) (landerPos.getY()/300+175);
 
         //System.out.println(landerX);
         //System.out.println(landerY);
