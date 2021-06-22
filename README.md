@@ -1,5 +1,6 @@
 **GROUP 3: FINAL CODE**
 **INSTRUCTIONS OF HOW TO RUN CODE**
+
 The structure of the code includes the implementation of the interfaces given in Phase 1 and a Genetic Algorithm (GA.java),  as well as all solvers implemented in phase 2 (EulerSolver.java , RungeKuttaSolver.java and VerletSolver.java)
 and the fuel system (FuelSolver.java, SolarSystemSolver.java). 
 For this final phase, an Open Loop controller  (related files: Lander.java, OpenLoop.java, PhysicsEngine.java and 
