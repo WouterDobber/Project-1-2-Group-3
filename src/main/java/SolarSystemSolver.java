@@ -1,7 +1,5 @@
-
 public class SolarSystemSolver implements ODESolverInterface {
-
-	/*
+/*
 	 * Solve the differential equation by taking multiple steps.
 	 *
 	 * @param f the function defining the differential equation dy/dt=f(t,y)
@@ -87,9 +85,24 @@ public class SolarSystemSolver implements ODESolverInterface {
 		NewtonsFunction castedF = (NewtonsFunction) f;
 		State castedY = (State) y;
 		castedY.setTime(t);
+		
 		RateInterface acceleration = castedF.call(t, castedY);
+		RateOfChange castedA = (RateOfChange) acceleration;
+		FuelSolver fuel = new FuelSolver(y);
+		
+		CelestialBody body1 = castedY.celestialBodies.get(11);
+		
+		if (body1.getMdot() > 0){
+			//If mdot > 0, the rocket wants to thrust
+			Vector thrust = fuel.solve(body1.getMdot());
+			
+			Vector newVector = (Vector) castedA.getRates().get(11).add(thrust);
+		
+			castedA.getRates().set(11, newVector);
+		}
+		
 		StateInterface resultFromChange = castedY.addMul(h, acceleration);
 		return resultFromChange;
 	}
-
+	
 }

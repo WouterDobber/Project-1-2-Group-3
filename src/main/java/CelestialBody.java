@@ -1,4 +1,3 @@
-
 import java.awt.*;
 
 public class CelestialBody {
@@ -8,6 +7,8 @@ public class CelestialBody {
 	private Image pic;
 	private Vector3dInterface location;
 	private Vector3dInterface velocity;
+	private double mdot;
+	private Vector dir;
 
 	/**
 	 * Constructor
@@ -87,6 +88,35 @@ public class CelestialBody {
 	 */
 	public double getMass() {
 		return mass;
+	}
+	
+	public void addMass(double newMass){
+		mass+= newMass;
+	}
+	
+	public boolean canThrust(double usedMass){
+		if (mass - usedMass >= 84000){
+			return true;	
+		}
+		else {	
+			return false;
+		}
+	}
+	
+	public void setMdot(double mdot1){
+		mdot = mdot1;
+	}
+	
+	public double getMdot(){
+		return mdot;
+	}
+	
+	public Vector getDir(){
+		return dir;	
+	}
+	
+	public void setDir(Vector direction){
+		dir = direction;	
 	}
 
 	/**
